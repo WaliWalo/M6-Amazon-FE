@@ -139,15 +139,15 @@ export async function getSpecificReview(productId, reviewId) {
 export async function postReview(productId, review) {
   const config = {
     method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
   };
+  console.log(review);
   try {
     const response = await fetch(`${url}/products/${productId}/reviews`, {
       config,
-      review,
     });
+    console.log(response);
     if (response.ok) {
       alert("successfuly added");
       let result = response.json();
@@ -159,7 +159,7 @@ export async function postReview(productId, review) {
     }
   } catch (error) {
     console.log("Posting review error", error);
-    return error.response.data;
+    return error;
   }
 }
 
@@ -205,7 +205,7 @@ export async function deleteReview(productId, reviewId) {
       return response.json();
     }
   } catch (error) {
-    console.log("Deleting review error", error)
+    console.log("Deleting review error", error);
     return error;
   }
 }

@@ -10,7 +10,6 @@ const Reviews = (props) => {
   const [review, setReview] = useState({
     comment: "",
     rate: 1,
-    elementId: "",
   });
   const [submittedSize, setSubmittedSize] = useState(0);
   const [reviews, setReviews] = useState([]);
@@ -18,7 +17,6 @@ const Reviews = (props) => {
 
   useEffect(() => {
     let newReview = { ...review };
-    newReview.elementId = props.productId;
     setReview(newReview);
   }, [props.productId]);
 
@@ -27,6 +25,7 @@ const Reviews = (props) => {
     if (props.productId) {
       const postedRev = await postReview(props.productId, review);
       setSubmittedSize(submittedSize + 1);
+      console.log(postedRev);
     }
   };
 

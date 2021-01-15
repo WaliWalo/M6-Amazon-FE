@@ -38,14 +38,14 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        {this.state.basket ? (
+        {/* {this.state.basket ? (
           <Basket
             basket={this.state.basket}
             handleModified={this.handleModified}
           />
         ) : (
           <h3>Empty Basket</h3>
-        )}
+        )} */}
 
         <ProductList addToBasket={this.addToBasket} />
       </div>
