@@ -94,12 +94,33 @@ export async function removeProduct(id) {
   }
 }
 
-// "/:id/reviews" GET ALL REVIEWS FOR A SINGLE PRODUCT
+// GET ALL REVIEWS FOR A SINGLE PRODUCT "products/:productId/reviews"
 export async function getAllReviews(productId) {
   try {
+    const response = await fetch(`${url}/products/${productId}/reviews`, {
+      method: "GET",
+    });
+    if (response.ok) {
+      let data = response.json();
+      return data;
+    } else {
+      let error = response.json();
+      return error;
+    }
+  } catch (error) {
+    console.log("Fetching all reviews error", error);
+    return error.response.data;
+  }
+}
+
+// GET A SPECIFIC REVIEW FOR A SINGLE PRODUCT "products/:productId/reviews/:reviewId"
+export async function getSpecificReview(productId, reviewId) {
+  try {
     const response = await fetch(
-      `http://localhost:3001/products/${productId}/reviews`,
-      { method: "GET" }
+      `${url}/products/${productId}/reviews${reviewId}`,
+      {
+        method: "GET",
+      }
     );
     if (response.ok) {
       let data = response.json();
@@ -109,44 +130,53 @@ export async function getAllReviews(productId) {
       return error;
     }
   } catch (error) {
-    return error;
+    console.log("Fetching specific review error", error);
+    return error.response.data;
   }
 }
 
-// "/:id/reviews" POST A REVIEW FOR A PRODUCT
+// POST A REVIEW FOR A PRODUCT "products/:productId/reviews"
 export async function postReview(productId, review) {
+  const config = {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
   try {
-    const response = await fetch(
-      `http://localhost:3001/products/${productId}/reviews`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(review),
-      }
-    );
+    const response = await fetch(`${url}/products/${productId}/reviews`, {
+      config,
+      review,
+    });
     if (response.ok) {
       alert("successfuly added");
       let result = response.json();
       return result;
     } else {
-      alert("fuck! smthing wrong");
+      alert("Unable to post your review, something went wrong");
       let error = response.json();
       return error;
     }
   } catch (error) {
-    return error;
+    console.log("Posting review error", error);
+    return error.response.data;
   }
 }
 
-// UPDATE A REVIEW
-export async function updateReview(reviewId, review) {
+// UPDATE A REVIEW "products/:productId/reviews/:reviewsId"
+export async function updateReview(productId, reviewId, review) {
+  const config = {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
   try {
     const response = await fetch(
-      `http://localhost:3001/products/${reviewId}/reviews`,
+      `${url}/products/${productId}/reviews/${reviewId}`,
       {
-        method: "PUT",
-        headers: new Headers("Content-Type", "application/json"),
-        body: JSON.stringify(review),
+        config,
+        review,
       }
     );
     if (response.ok) {
@@ -157,15 +187,16 @@ export async function updateReview(reviewId, review) {
       return error;
     }
   } catch (error) {
+    console.log("Editing review error", error);
     return error;
   }
 }
 
-//DELETE A REVIEW
-export async function deleteReview(reviewId) {
+// DELETE A REVIEW "products/:productId/reviews/:reviewsId"
+export async function deleteReview(productId, reviewId) {
   try {
     const response = await fetch(
-      `http://localhost:3001/products/${reviewId}/reviews`,
+      `${url}/products/${productId}/reviews/${reviewId}`,
       { method: "DELETE" }
     );
     if (response.ok) {
@@ -174,6 +205,7 @@ export async function deleteReview(reviewId) {
       return response.json();
     }
   } catch (error) {
+    console.log("Deleting review error", error)
     return error;
   }
 }
@@ -184,10 +216,10 @@ export async function postProductImage(productId, file) {
     console.log(file);
     let formData = new FormData();
     formData.append("product", file, file.name);
-    const response = await fetch(
-      `http://localhost:3001/products/${productId}/image`,
-      { method: "POST", body: formData }
-    );
+    const response = await fetch(`${url}/products/${productId}/image`, {
+      method: "POST",
+      body: formData,
+    });
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -205,7 +237,7 @@ export async function addProductToCart(productId, cartId) {
   try {
     cartId = "5f6b1991df85440017160811";
     let response = await fetch(
-      `http://localhost:3001/products/carts/${cartId}/addToCart/${productId}`,
+      `${url}/products/carts/${cartId}/addToCart/${productId}`,
       { method: "POST" }
     );
     if (response.ok) {
@@ -224,10 +256,9 @@ export async function addProductToCart(productId, cartId) {
 export async function getBasket(cartId) {
   try {
     cartId = "5f6b1991df85440017160811";
-    let response = await fetch(
-      `http://localhost:3001/products/carts/${cartId}/`,
-      { method: "GET" }
-    );
+    let response = await fetch(`${url}/products/carts/${cartId}/`, {
+      method: "GET",
+    });
     if (response.ok) {
       const data = await response.json();
 
@@ -246,7 +277,7 @@ export async function removeItemFromBasket(cartId, productId) {
   try {
     cartId = "5f6b1991df85440017160811";
     let response = await fetch(
-      `http://localhost:3001/products/carts/${cartId}/removeFromCart/${productId}`,
+      `${url}/products/carts/${cartId}/removeFromCart/${productId}`,
       { method: "DELETE" }
     );
     if (response.ok) {
@@ -263,13 +294,12 @@ export async function removeItemFromBasket(cartId, productId) {
 }
 
 //GET PRODUCT PDF
-export async function getProductPdf(id) {
+export async function getProductPdf(productId) {
   try {
-    let response = await fetch(
-      `http://localhost:3001/products/${id}/exportPdf`,
-      { method: "GET" }
-    );
-    const file = { file: `http://localhost:3001/products/${id}/exportPdf` };
+    let response = await fetch(`${url}/products/${productId}/exportPdf`, {
+      method: "GET",
+    });
+    const file = { file: `${url}/products/${productId}/exportPdf` };
 
     if (response.ok) {
       alert("SUCCESS! SENT TO YOUR EMAIL!");
@@ -287,11 +317,10 @@ export async function getProductPdf(id) {
 
 export async function downloadList() {
   try {
-    let response = await fetch(
-      `http://localhost:3001/products/csv/exportToCSV`,
-      { method: "GET" }
-    );
-    const file = { file: `http://localhost:3001/products/csv/exportToCSV` };
+    let response = await fetch(`${url}/products/csv/exportToCSV`, {
+      method: "GET",
+    });
+    const file = { file: `${url}/products/csv/exportToCSV` };
 
     if (response.ok) {
       // alert("SUCCESS!");
