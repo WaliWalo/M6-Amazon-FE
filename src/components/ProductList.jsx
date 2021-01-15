@@ -52,7 +52,7 @@ const ProductList = (props) => {
                         height: "10rem",
                       }}
                       variant="top"
-                      src={`http://localhost:3001/${product._id}.jpg`}
+                      src={product.imageUrl}
                     />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
