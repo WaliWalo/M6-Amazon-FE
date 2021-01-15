@@ -1,8 +1,30 @@
 //GET ALL PRODUCTS
 const url = process.env.REACT_APP_BE_URL;
-export async function getProducts() {
+export async function getProducts(category) {
   try {
-    const response = await fetch(`${url}/products?limit=1`, {
+    let newUrl = `${url}/products?limit=10`;
+    if (category) {
+      newUrl = `${url}/products?category=${category}`;
+    }
+    const response = await fetch(`${newUrl}`, {
+      method: "GET",
+    });
+    if (response.ok) {
+      let data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      let error = response.json();
+      return error;
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getAllProducts() {
+  try {
+    const response = await fetch(`${url}/products`, {
       method: "GET",
     });
     if (response.ok) {

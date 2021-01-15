@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row, Card, Button, Spinner } from "react-bootstrap";
-import { getProducts } from "../api/productsApi";
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  Button,
+  Spinner,
+  Form,
+} from "react-bootstrap";
+import { getAllProducts, getProducts } from "../api/productsApi";
 import Reviews from "./Reviews";
 const ProductList = (props) => {
   const [products, setProducts] = useState([]);
@@ -8,20 +16,37 @@ const ProductList = (props) => {
   const [productId, setProductId] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [paginationLink, setPaginationLink] = useState(null);
-
+  const [categories, setCategories] = useState([]);
+  const [selected, setSelected] = useState([]);
   useEffect(() => {
     const callMeNow = async () => {
       await fetchProducts();
+      // GET ALL PRODUCT FOR CATEGORIES
+      await fetchAllProducts();
     };
 
     callMeNow();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (category) => {
     setLoading(true);
-    const allProducts = await getProducts();
+    const allProducts = await getProducts(category);
     setPaginationLink(allProducts.links);
     setProducts(allProducts.products);
+    setLoading(false);
+  };
+
+  const fetchAllProducts = async () => {
+    setLoading(true);
+    const allProducts = await getAllProducts();
+    let productCategories = [];
+    allProducts.products.forEach((product) => {
+      if (product.category) {
+        productCategories.push(product.category);
+      }
+    });
+    const uniqueCategories = [...new Set(productCategories)];
+    setCategories(uniqueCategories);
     setLoading(false);
   };
 
@@ -72,6 +97,21 @@ const ProductList = (props) => {
       }
     }
   };
+
+  const handleCheckBox = (e) => {
+    console.log(e.target.id);
+    let indexOfSelected = selected.findIndex(
+      (select) => select === e.target.id
+    );
+    if (indexOfSelected !== -1) {
+      selected.splice(indexOfSelected, 1);
+      setSelected(selected);
+    } else {
+      selected.push(e.target.id);
+      setSelected(selected);
+    }
+    fetchProducts(e.target.id);
+  };
   return (
     <div className="product-list mt-4">
       <Reviews
@@ -80,6 +120,23 @@ const ProductList = (props) => {
         onHide={() => setModalShow(false)}
       />
       <Container>
+        <Row>
+          <Form>
+            <div key={`inline-checkbox`} className="mb-3">
+              {categories.map((category) => {
+                return (
+                  <Form.Check
+                    inline
+                    label={category}
+                    type={"checkbox"}
+                    id={category}
+                    onChange={(e) => handleCheckBox(e)}
+                  />
+                );
+              })}
+            </div>
+          </Form>
+        </Row>
         {loading ? (
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>

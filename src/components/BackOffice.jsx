@@ -39,7 +39,7 @@ const BackOffice = (props) => {
   const fetchProducts = async () => {
     setLoading(true);
     const products = await getProducts();
-    setProducts(products);
+    setProducts(products.products);
     setLoading(false);
   };
 
@@ -48,10 +48,6 @@ const BackOffice = (props) => {
     if (update !== null) {
       let updateResult = await updateProductById(update._id, product);
       // await postProductImage(update._id, image);
-
-
-
-
 
       alert("SUCCESS");
       setSubmittedSize(submittedSize + 1);
@@ -75,8 +71,8 @@ const BackOffice = (props) => {
   const fillImageForm = (e) => {
     console.log(e.target.files);
     setImage(e.target.files[0]);
-    let newProduct = {...product, imageUrl: e.target.files[0]}
-    setProduct(newProduct)
+    let newProduct = { ...product, imageUrl: e.target.files[0] };
+    setProduct(newProduct);
   };
 
   const deleteProduct = async (e) => {
