@@ -18,21 +18,63 @@ export async function getProducts() {
   }
 }
 
+// const postImage = async (image) => {
+
+//   if (file !== null) {
+//     let formData = new FormData();
+//     formData.append("imageUrl", e.target.files[0]);
+//     console.log(form_data.get("imageUrl"));
+//   try {
+//     const res = await fetch(`${url}/products`, {
+//       method: "POST",
+//      headers: { "Content-Type": "formData" },
+//      body: image
+//     });
+//     if (response.ok) {
+//       return "Image Added";
+//     } else {
+//       return "Something went wrong";
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     }
+
+//   }
+// }
+
 //POST A PRODUCT
 export async function postProduct(product) {
   try {
+    // let formData = new FormData();
+    // formData.append("name", product.name);
+    // formData.append("imageUrl", product.imageUrl, product.imageUrl.name);
+    // formData.append("description", product.description);
+    // formData.append("price", product.price);
+    // formData.append("brand", product.brand);
+    // formData.append("category", product.category);
+
+    let formdata = new FormData();
+    formdata.append("name", product.name);
+    formdata.append("image", product.imageUrl, product.imageUrl.name);
+    formdata.append("description", product.description);
+    formdata.append("price", product.price);
+    formdata.append("brand", product.brand);
+    formdata.append("category", product.category);
+
+    console.log(formdata.get("imageUrl"));
+
     const response = await fetch(`${url}/products/`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
+      body: formdata,
     });
+
     if (response.ok) {
       alert("success");
-      let result = response.json();
+      let result = await response.json();
       return result;
     } else {
       alert("fuck");
-      let error = response.json();
+      let error = await response.json();
       return error;
     }
   } catch (error) {
