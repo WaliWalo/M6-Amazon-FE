@@ -65,7 +65,7 @@ const AddProductForm = (props) => {
               <option>Other</option>
             </Form.Control>
           </Form.Group>
-
+{/* 
           <Form.Group>
             <Form.Label>ImageUrl</Form.Label>
             <Form.Control
@@ -74,7 +74,7 @@ const AddProductForm = (props) => {
               value={props.product.imageUrl}
               onChange={props.fillForm}
             />
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group>
             <Form.File

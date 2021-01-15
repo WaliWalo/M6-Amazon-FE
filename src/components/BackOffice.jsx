@@ -47,13 +47,18 @@ const BackOffice = (props) => {
     e.preventDefault();
     if (update !== null) {
       let updateResult = await updateProductById(update._id, product);
-      await postProductImage(update._id, image);
+      // await postProductImage(update._id, image);
+
+
+
+
+
       alert("SUCCESS");
       setSubmittedSize(submittedSize + 1);
       console.log(updateResult);
     } else {
       let postedProduct = await postProduct(product);
-      await postProductImage(postedProduct._id, image);
+      // await postProductImage(postedProduct._id, image);
 
       setSubmittedSize(submittedSize + 1);
       console.log(postedProduct.errors);
@@ -70,6 +75,8 @@ const BackOffice = (props) => {
   const fillImageForm = (e) => {
     console.log(e.target.files);
     setImage(e.target.files[0]);
+    let newProduct = {...product, imageUrl: e.target.files[0]}
+    setProduct(newProduct)
   };
 
   const deleteProduct = async (e) => {
