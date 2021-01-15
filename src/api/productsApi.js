@@ -2,13 +2,13 @@
 const url = process.env.REACT_APP_BE_URL;
 export async function getProducts() {
   try {
-    const response = await fetch(`${url}/products`, {
+    const response = await fetch(`${url}/products?limit=1`, {
       method: "GET",
     });
     if (response.ok) {
       let data = await response.json();
       console.log(data);
-      return data.products;
+      return data;
     } else {
       let error = response.json();
       return error;
