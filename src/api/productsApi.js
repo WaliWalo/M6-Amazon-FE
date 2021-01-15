@@ -8,7 +8,7 @@ export async function getProducts() {
     if (response.ok) {
       let data = await response.json();
       console.log(data);
-      return data;
+      return data.products;
     } else {
       let error = response.json();
       return error;
