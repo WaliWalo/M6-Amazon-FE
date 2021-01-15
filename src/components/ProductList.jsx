@@ -20,7 +20,7 @@ const ProductList = (props) => {
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     const callMeNow = async () => {
-      await fetchProducts();
+      await fetchProducts(categories);
       // GET ALL PRODUCT FOR CATEGORIES
       await fetchAllProducts();
     };
@@ -98,7 +98,19 @@ const ProductList = (props) => {
     }
   };
 
-  const handleCheckBox = (e) => {
+  const handleAscend = () => {
+    let sortedProducts = products.sort((a, b) => (a.price > b.price ? 1 : -1));
+    setProducts(sortedProducts);
+    console.log(sortedProducts);
+  };
+
+  const handleDescend = () => {
+    let sortedProducts = products.sort((a, b) => (a.price > b.price ? -1 : 1));
+    setProducts(sortedProducts);
+    console.log(sortedProducts);
+  };
+
+  const handleCheckBox = async (e) => {
     console.log(e.target.id);
     let indexOfSelected = selected.findIndex(
       (select) => select === e.target.id
@@ -110,7 +122,7 @@ const ProductList = (props) => {
       selected.push(e.target.id);
       setSelected(selected);
     }
-    fetchProducts(e.target.id);
+    await fetchProducts(selected);
   };
   return (
     <div className="product-list mt-4">
@@ -136,6 +148,10 @@ const ProductList = (props) => {
               })}
             </div>
           </Form>
+          <Button className="mx-2" onClick={() => handleAscend()}>
+            Ascending
+          </Button>
+          <Button onClick={() => handleDescend()}>Descending</Button>
         </Row>
         {loading ? (
           <Spinner animation="border" role="status">

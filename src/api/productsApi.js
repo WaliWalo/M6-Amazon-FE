@@ -1,11 +1,20 @@
 //GET ALL PRODUCTS
 const url = process.env.REACT_APP_BE_URL;
-export async function getProducts(category) {
+export async function getProducts(category, sort = "price") {
   try {
+    console.log(category);
     let newUrl = `${url}/products?limit=10`;
-    if (category) {
-      newUrl = `${url}/products?category=${category}`;
+    if (category.length > 0) {
+      let string = "";
+      category.forEach((x) => {
+        string += `category=${x}&`;
+      });
+      newUrl = `${url}/products?${string}`;
+      console.log(string);
     }
+
+    newUrl = `${newUrl}&sort=${sort}`;
+
     const response = await fetch(`${newUrl}`, {
       method: "GET",
     });
@@ -14,7 +23,7 @@ export async function getProducts(category) {
       console.log(data);
       return data;
     } else {
-      let error = response.json();
+      let error = await response.json();
       return error;
     }
   } catch (error) {
