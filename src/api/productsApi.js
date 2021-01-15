@@ -147,14 +147,14 @@ export async function postReview(productId, review) {
     const response = await fetch(`${url}/products/${productId}/reviews`, {
       config,
     });
-    console.log(response);
     if (response.ok) {
       alert("successfuly added");
-      let result = response.json();
+      let result = await response.json();
+      console.log(result);
       return result;
     } else {
       alert("Unable to post your review, something went wrong");
-      let error = response.json();
+      let error = await response.json();
       return error;
     }
   } catch (error) {
