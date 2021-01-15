@@ -8,7 +8,11 @@ import {
   postProductImage,
 } from "../api/productsApi";
 import AddProductForm from "./AddProductForm";
-import { postProduct, removeProduct } from "../api/productsApi";
+import {
+  postProduct,
+  removeProduct,
+  updateProductById,
+} from "../api/productsApi";
 const BackOffice = (props) => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({
@@ -42,7 +46,7 @@ const BackOffice = (props) => {
   const addProduct = async (e) => {
     e.preventDefault();
     if (update !== null) {
-      let updateResult = await updateProduct(update._id, update);
+      let updateResult = await updateProductById(update._id, product);
       await postProductImage(update._id, image);
       alert("SUCCESS");
       setSubmittedSize(submittedSize + 1);
@@ -136,7 +140,7 @@ const BackOffice = (props) => {
                                 width: "50px",
                                 height: "50px",
                               }}
-                              src={`http://localhost:3001/${product._id}.jpg`}
+                              src={product.imageUrl}
                             />
                           </td>
                           <td>{product.name}</td>
@@ -159,13 +163,13 @@ const BackOffice = (props) => {
                             >
                               Remove
                             </Button>
-                            <Button
+                            {/* <Button
                               id={product._id}
                               onClick={(e) => downloadProduct(e)}
                               variant="success"
                             >
                               DOWNLOAD
-                            </Button>
+                            </Button> */}
                           </td>
                         </tr>
                       );

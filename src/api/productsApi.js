@@ -21,7 +21,7 @@ export async function getProducts() {
 //POST A PRODUCT
 export async function postProduct(product) {
   try {
-    const response = await fetch(`http://localhost:3001/products/`, {
+    const response = await fetch(`${url}/products/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
@@ -43,7 +43,7 @@ export async function postProduct(product) {
 //GET A SINGLE PRODUCT
 export async function getSingleProduct(id) {
   try {
-    const response = await fetch(`http://localhost:3001/products/${id}`, {
+    const response = await fetch(`${url}/products/${id}`, {
       method: "GET",
     });
     if (response.ok) {
@@ -59,18 +59,18 @@ export async function getSingleProduct(id) {
 }
 
 //UPDATE A PRODUCT
-export async function updateProduct(id, product) {
+export async function updateProductById(id, product) {
   try {
-    const response = await fetch(`http://localhost:3001/products/${id}`, {
+    const response = await fetch(`${url}/products/${id}`, {
       method: "PUT",
-      header: new Headers("Content-Type", "application/json"),
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
     });
     if (response.ok) {
-      let data = response.json();
+      let data = await response.json();
       return data;
     } else {
-      let error = response.json();
+      let error = await response.json();
       return error;
     }
   } catch (error) {
@@ -81,7 +81,7 @@ export async function updateProduct(id, product) {
 //REMOVE A PRODUCT
 export async function removeProduct(id) {
   try {
-    const response = await fetch(`http://localhost:3001/products/${id}`, {
+    const response = await fetch(`${url}/products/${id}`, {
       method: "DELETE",
     });
     if (response.ok) {
