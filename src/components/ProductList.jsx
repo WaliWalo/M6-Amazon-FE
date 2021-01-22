@@ -20,7 +20,7 @@ const ProductList = (props) => {
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     const callMeNow = async () => {
-      await fetchProducts(categories);
+      await fetchProducts();
       // GET ALL PRODUCT FOR CATEGORIES
       await fetchAllProducts();
     };
@@ -34,6 +34,7 @@ const ProductList = (props) => {
     setPaginationLink(allProducts.links);
     setProducts(allProducts.products);
     setLoading(false);
+    console.log("fetchProducts allProducts", allProducts);
   };
 
   const fetchAllProducts = async () => {
@@ -48,6 +49,7 @@ const ProductList = (props) => {
     const uniqueCategories = [...new Set(productCategories)];
     setCategories(uniqueCategories);
     setLoading(false);
+    console.log("fetchAllProducts allProducts", allProducts);
   };
 
   const sendProduct = (product) => {
@@ -98,19 +100,7 @@ const ProductList = (props) => {
     }
   };
 
-  const handleAscend = () => {
-    let sortedProducts = products.sort((a, b) => (a.price > b.price ? 1 : -1));
-    setProducts(sortedProducts);
-    console.log(sortedProducts);
-  };
-
-  const handleDescend = () => {
-    let sortedProducts = products.sort((a, b) => (a.price > b.price ? -1 : 1));
-    setProducts(sortedProducts);
-    console.log(sortedProducts);
-  };
-
-  const handleCheckBox = async (e) => {
+  const handleCheckBox = (e) => {
     console.log(e.target.id);
     let indexOfSelected = selected.findIndex(
       (select) => select === e.target.id
@@ -122,7 +112,7 @@ const ProductList = (props) => {
       selected.push(e.target.id);
       setSelected(selected);
     }
-    await fetchProducts(selected);
+    fetchProducts(e.target.id);
   };
   return (
     <div className="product-list mt-4">
@@ -148,10 +138,6 @@ const ProductList = (props) => {
               })}
             </div>
           </Form>
-          <Button className="mx-2" onClick={() => handleAscend()}>
-            Ascending
-          </Button>
-          <Button onClick={() => handleDescend()}>Descending</Button>
         </Row>
         {loading ? (
           <Spinner animation="border" role="status">
@@ -162,7 +148,7 @@ const ProductList = (props) => {
             <Row>
               {products.map((product) => {
                 return (
-                  <Col md={3} key={product._id}>
+                  <Col md={3} key={product.id}>
                     <Card style={{ width: "12rem" }}>
                       <Card.Img
                         style={{
@@ -180,7 +166,7 @@ const ProductList = (props) => {
                         </Card.Text>
                         <Button
                           onClick={() => {
-                            setProductId(product._id);
+                            setProductId(product.id);
                             setModalShow(true);
                           }}
                           variant="primary"

@@ -8,6 +8,8 @@ import {
   postProductImage,
 } from "../api/productsApi";
 import AddProductForm from "./AddProductForm";
+import uniqid from "uniqid";
+
 import {
   postProduct,
   removeProduct,
@@ -135,7 +137,7 @@ const BackOffice = (props) => {
                   {products &&
                     products.map((product, index) => {
                       return (
-                        <tr key={index}>
+                        <tr key={uniqid()}>
                           <td>{index + 1}</td>
                           <td>
                             <Image

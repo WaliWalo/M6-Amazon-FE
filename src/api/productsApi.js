@@ -1,29 +1,22 @@
 //GET ALL PRODUCTS
 const url = process.env.REACT_APP_BE_URL;
-export async function getProducts(category, sort = "price") {
+export async function getProducts(category) {
   try {
-    console.log(category);
-    let newUrl = `${url}/api/products?limit=10`;
-    if (category.length > 0) {
-      let string = "";
-      category.forEach((x) => {
-        string += `category=${x}&`;
-      });
-      newUrl = `${url}/api/products?${string}`;
-      console.log(string);
+    let newUrl = `${url}/api/products`;
+    if (category) {
+      newUrl = `${url}/api/products?category=${category}`;
     }
-
-    newUrl = `${newUrl}&sort=${sort}`;
-
     const response = await fetch(`${newUrl}`, {
       method: "GET",
     });
     if (response.ok) {
       let data = await response.json();
-      console.log(data);
-      return data;
+      console.log("complete data", data);
+      console.log("name", data.data[0].name)
+      console.log("data.data", data);
+      return data.data;
     } else {
-      let error = await response.json();
+      let error = response.json();
       return error;
     }
   } catch (error) {
@@ -307,73 +300,73 @@ export async function postProductImage(productId, file) {
 }
 
 //POST product to cart
-export async function addProductToCart(productId, cartId) {
-  try {
-    cartId = "5f6b1991df85440017160811";
-    let response = await fetch(
-      `${url}/products/carts/${cartId}/addToCart/${productId}`,
-      { method: "POST" }
-    );
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      const error = await response.json();
-      return error;
-    }
-  } catch (error) {
-    return error;
-  }
-}
+// export async function addProductToCart(productId, cartId) {
+//   try {
+//     cartId = "5f6b1991df85440017160811";
+//     let response = await fetch(
+//       `${url}/api/products/carts/${cartId}/addToCart/${productId}`,
+//       { method: "POST" }
+//     );
+//     if (response.ok) {
+//       const data = await response.json();
+//       return data;
+//     } else {
+//       const error = await response.json();
+//       return error;
+//     }
+//   } catch (error) {
+//     return error;
+//   }
+// }
 
 //GET BASKET
-export async function getBasket(cartId) {
-  try {
-    cartId = "5f6b1991df85440017160811";
-    let response = await fetch(`${url}/products/carts/${cartId}/`, {
-      method: "GET",
-    });
-    if (response.ok) {
-      const data = await response.json();
+// export async function getBasket(cartId) {
+//   try {
+//     cartId = "5f6b1991df85440017160811";
+//     let response = await fetch(`${url}/api/products/carts/${cartId}/`, {
+//       method: "GET",
+//     });
+//     if (response.ok) {
+//       const data = await response.json();
 
-      return data;
-    } else {
-      const error = await response.json();
-      return error;
-    }
-  } catch (error) {
-    return error;
-  }
-}
+//       return data;
+//     } else {
+//       const error = await response.json();
+//       return error;
+//     }
+//   } catch (error) {
+//     return error;
+//   }
+// }
 
 //DELETE ITEM FROM BASKET
-export async function removeItemFromBasket(cartId, productId) {
-  try {
-    cartId = "5f6b1991df85440017160811";
-    let response = await fetch(
-      `${url}/products/carts/${cartId}/removeFromCart/${productId}`,
-      { method: "DELETE" }
-    );
-    if (response.ok) {
-      const data = await response.json();
+// export async function removeItemFromBasket(cartId, productId) {
+//   try {
+//     cartId = "5f6b1991df85440017160811";
+//     let response = await fetch(
+//       `${url}/api/products/carts/${cartId}/removeFromCart/${productId}`,
+//       { method: "DELETE" }
+//     );
+//     if (response.ok) {
+//       const data = await response.json();
 
-      return data;
-    } else {
-      const error = await response.json();
-      return error;
-    }
-  } catch (error) {
-    return error;
-  }
-}
+//       return data;
+//     } else {
+//       const error = await response.json();
+//       return error;
+//     }
+//   } catch (error) {
+//     return error;
+//   }
+// }
 
 //GET PRODUCT PDF
 export async function getProductPdf(productId) {
   try {
-    let response = await fetch(`${url}/products/${productId}/exportPdf`, {
+    let response = await fetch(`${url}/api/products/${productId}/exportPdf`, {
       method: "GET",
     });
-    const file = { file: `${url}/products/${productId}/exportPdf` };
+    const file = { file: `${url}/api/products/${productId}/exportPdf` };
 
     if (response.ok) {
       alert("SUCCESS! SENT TO YOUR EMAIL!");
@@ -391,10 +384,10 @@ export async function getProductPdf(productId) {
 
 export async function downloadList() {
   try {
-    let response = await fetch(`${url}/products/csv/exportToCSV`, {
+    let response = await fetch(`${url}/api/products/csv/exportToCSV`, {
       method: "GET",
     });
-    const file = { file: `${url}/products/csv/exportToCSV` };
+    const file = { file: `${url}/api/products/csv/exportToCSV` };
 
     if (response.ok) {
       // alert("SUCCESS!");

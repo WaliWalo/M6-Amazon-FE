@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllReviews, deleteReview } from "../api/productsApi";
-
+import uniqid from "uniqid";
 import { ListGroup, Button } from "react-bootstrap";
 const ShowReviews = (props) => {
   const [reviews, setReviews] = useState([]);
@@ -30,7 +30,7 @@ const ShowReviews = (props) => {
         {reviews &&
           reviews.map((rev) => {
             return (
-              <div>
+              <div key={uniqid()}>
                 <ListGroup.Item>
                   <strong>comment: </strong> {rev.comment}
                 </ListGroup.Item>

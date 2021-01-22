@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { addProductToCart, getBasket } from "../api/productsApi";
+// import { getBasket, addProductToCart } from "../api/productsApi";
 import Basket from "./Basket";
 import ProductList from "./ProductList";
 export default class Home extends Component {
@@ -13,27 +13,27 @@ export default class Home extends Component {
     this.setState({ modified });
   };
 
-  addToBasket = async (product) => {
-    await addProductToCart(product._id, "");
-    let modified = this.state.modified + 1;
-    this.setState({ modified });
-    alert(product.name + " added to basket.");
-  };
+  // addToBasket = async (product) => {
+  //   await addProductToCart(product._id, "");
+  //   let modified = this.state.modified + 1;
+  //   this.setState({ modified });
+  //   alert(product.name + " added to basket.");
+  // };
 
-  componentDidMount = () => {
-    this.getBasketFromApi();
-  };
+  // componentDidMount = () => {
+  //   this.getBasketFromApi();
+  // };
 
-  getBasketFromApi = async () => {
-    const basket = await getBasket("");
-    this.setState({ basket: basket });
-  };
+  // getBasketFromApi = async () => {
+  //   const basket = await getBasket("");
+  //   this.setState({ basket: basket });
+  // };
 
-  componentDidUpdate = (prevProp, prevState) => {
-    if (this.state.modified !== prevState.modified) {
-      this.getBasketFromApi();
-    }
-  };
+  // componentDidUpdate = (prevProp, prevState) => {
+  //   if (this.state.modified !== prevState.modified) {
+  //     this.getBasketFromApi();
+  //   }
+  // };
 
   render() {
     return (
