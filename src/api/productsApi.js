@@ -3,13 +3,13 @@ const url = process.env.REACT_APP_BE_URL;
 export async function getProducts(category, sort = "price") {
   try {
     console.log(category);
-    let newUrl = `${url}/products?limit=10`;
+    let newUrl = `${url}/api/products?limit=10`;
     if (category.length > 0) {
       let string = "";
       category.forEach((x) => {
         string += `category=${x}&`;
       });
-      newUrl = `${url}/products?${string}`;
+      newUrl = `${url}/api/products?${string}`;
       console.log(string);
     }
 
@@ -33,7 +33,7 @@ export async function getProducts(category, sort = "price") {
 
 export async function getAllProducts() {
   try {
-    const response = await fetch(`${url}/products`, {
+    const response = await fetch(`${url}/api/products`, {
       method: "GET",
     });
     if (response.ok) {
@@ -94,7 +94,7 @@ export async function postProduct(product) {
 
     console.log(formdata.get("imageUrl"));
 
-    const response = await fetch(`${url}/products/`, {
+    const response = await fetch(`${url}/api/products/`, {
       method: "POST",
       body: formdata,
     });
@@ -116,7 +116,7 @@ export async function postProduct(product) {
 //GET A SINGLE PRODUCT
 export async function getSingleProduct(id) {
   try {
-    const response = await fetch(`${url}/products/${id}`, {
+    const response = await fetch(`${url}/api/products/${id}`, {
       method: "GET",
     });
     if (response.ok) {
@@ -134,7 +134,7 @@ export async function getSingleProduct(id) {
 //UPDATE A PRODUCT
 export async function updateProductById(id, product) {
   try {
-    const response = await fetch(`${url}/products/${id}`, {
+    const response = await fetch(`${url}/api/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
@@ -154,7 +154,7 @@ export async function updateProductById(id, product) {
 //REMOVE A PRODUCT
 export async function removeProduct(id) {
   try {
-    const response = await fetch(`${url}/products/${id}`, {
+    const response = await fetch(`${url}/api/products/${id}`, {
       method: "DELETE",
     });
     if (response.ok) {
@@ -170,7 +170,7 @@ export async function removeProduct(id) {
 // GET ALL REVIEWS FOR A SINGLE PRODUCT "products/:productId/reviews"
 export async function getAllReviews(productId) {
   try {
-    const response = await fetch(`${url}/products/${productId}/reviews`, {
+    const response = await fetch(`${url}/api/products/${productId}/reviews`, {
       method: "GET",
     });
     if (response.ok) {
@@ -190,7 +190,7 @@ export async function getAllReviews(productId) {
 export async function getSpecificReview(productId, reviewId) {
   try {
     const response = await fetch(
-      `${url}/products/${productId}/reviews${reviewId}`,
+      `${url}/api/products/${productId}/reviews${reviewId}`,
       {
         method: "GET",
       }
@@ -218,7 +218,7 @@ export async function postReview(productId, review) {
   console.log(review);
   try {
     const response = await fetch(
-      `${url}/products/${productId}/reviews`,
+      `${url}/api/products/${productId}/reviews`,
       config
     );
     if (response.ok) {
@@ -247,7 +247,7 @@ export async function updateReview(productId, reviewId, review) {
   };
   try {
     const response = await fetch(
-      `${url}/products/${productId}/reviews/${reviewId}`,
+      `${url}/api/products/${productId}/reviews/${reviewId}`,
       {
         config,
         review,
@@ -270,7 +270,7 @@ export async function updateReview(productId, reviewId, review) {
 export async function deleteReview(productId, reviewId) {
   try {
     const response = await fetch(
-      `${url}/products/${productId}/reviews/${reviewId}`,
+      `${url}/api/products/${productId}/reviews/${reviewId}`,
       { method: "DELETE" }
     );
     if (response.ok) {
@@ -290,7 +290,7 @@ export async function postProductImage(productId, file) {
     console.log(file);
     let formData = new FormData();
     formData.append("product", file, file.name);
-    const response = await fetch(`${url}/products/${productId}/image`, {
+    const response = await fetch(`${url}/api/products/${productId}/image`, {
       method: "POST",
       body: formData,
     });
